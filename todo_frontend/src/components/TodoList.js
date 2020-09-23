@@ -6,6 +6,7 @@ class TodoList extends Component {
 
     state = {
         todos: [],
+        status: 0 ,
         todoToShow: 'all',
         markAllComplete: false
     }
@@ -21,20 +22,28 @@ class TodoList extends Component {
         this.getDataFromAPI()
     }
 
-
-
     toggleComplete = (id) => {
-        this.setState({
-            todos: this.state.todos.map(todo => {
-                if (todo.id === id) {
-                    return {
-                        ...todo,
-                        complete: !todo.complete
+        const apiUrl = `http://localhost:8000/api/todos/${id}/status`
+
+        this.state.todos.map(todo => {
+            
+            if (todo.id === id) {
+                fetch(apiUrl, {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        complete: !todo.complete ? 1 : 0
+                    }),
+                    headers: {
+                        "Content-Type": "application/json; charset=UTF-8"
                     }
-                } else {
-                    return todo
-                }               
-            })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 200) {
+                         window.location.href = 'http://localhost:3000'
+                    }
+                }) 
+            }
         })
     }
 
@@ -50,10 +59,13 @@ class TodoList extends Component {
         fetch(apiUrl, {
             method: 'DELETE'
         })
-
-        this.setState({
-            todos: this.state.todos.filter(todo => todo.id !== id)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 200) {
+                window.location.href = 'http://localhost:3000'
+            }
         })
+
     }
 
     removeAllCompleteTodo = () => {

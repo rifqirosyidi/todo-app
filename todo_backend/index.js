@@ -52,12 +52,14 @@ app.post('/api/todos', (req, res) => {
     })
 })
 
-// Update Todo
-app.put('/api/todos/:id', (req, res) => {
-    let sqlQuery = "UPDATE todos SET todo = '" + req.body.todo + "' WHERE id = " + req.params.id;
+// Update / Toggle Complete Status
+app.put('/api/todos/:id/status', (req, res) => {
+    let sqlQuery = "UPDATE todos SET complete = '" + req.body.complete + "' WHERE id = " + req.params.id;
+
+    console.log(sqlQuery);
     dbConnect.query(sqlQuery, (err, results) => {
         if (err) throw err;
-        res.send({ status: 200, error: false, data: results, message: "update todo" })
+        res.send({ status: 200, error: false, data: results, message: "update complete" })
     })
 })
 
