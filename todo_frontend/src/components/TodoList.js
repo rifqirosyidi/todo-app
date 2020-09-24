@@ -24,7 +24,13 @@ class TodoList extends Component {
 
     toggleComplete = (id) => {
         const apiUrl = `http://localhost:8000/api/todos/${id}/status`
-
+        // ini kenapa pake map ya?
+        // terus kalo pake redux, semua fetch harusnya sudah bukan di component lagi, tpi melalui redux thunk action
+        // https://github.com/reduxjs/redux-thunk
+        // map itu buat return state baru, di sini nda return apa" tpi malah redirect ke localhost:3000
+        // Untuk toggle complete mengapa harus redirect? Harusnya tetep di satu page aja
+        // Tujuan nya bikin pake SPA itu supaya nda ada full browser refresh. Klo mau urus routing, pake library kayak react-router
+        // jangan modify window.location
         this.state.todos.map(todo => {
             
             if (todo.id === id) {
@@ -47,6 +53,7 @@ class TodoList extends Component {
         })
     }
 
+    // nama variable jangan 'x', yang lebih deskriptif biar org harus ga liat dulu code di bawah baru bisa ngerti.
     updateTodoToShow = (x) => {
         this.setState({
             todoToShow: x
@@ -54,6 +61,7 @@ class TodoList extends Component {
     }
 
     handleDelete = (id) => {
+        // taruh di redux thunk action, ga perlu redirect
         const initUrl = 'http://localhost:8000/api/todos/'
         const apiUrl = initUrl.concat(id)
         fetch(apiUrl, {
@@ -119,6 +127,7 @@ class TodoList extends Component {
                         className="bg-transparent hover:bg-green-500 text-green-700 mx-1 my-1 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent"
                         onClick={() => this.updateTodoToShow("complete")} >Completed
                     </button>
+                    {/* INi bisa pake && operator biar ga usah return null */}
                     {this.state.todos.some(todo => todo.complete) ? (
                         <button 
                             className="bg-transparent hover:bg-red-500 text-red-700 mx-1 my-1 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent"

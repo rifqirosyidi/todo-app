@@ -14,6 +14,7 @@ class TodoForm extends Component {
     } 
 
     handleSubmit = (event) => {
+        // taruh di redux thunk action, jangan redirect
         event.preventDefault()
 
         const apiUrl = 'http://localhost:8000/api/todos'

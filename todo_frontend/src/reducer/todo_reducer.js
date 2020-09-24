@@ -17,6 +17,7 @@ const initState = {
   ],
 };
 
+// coba dilenkapi semua CRUD action nya
 export default function rootReducer(state = initState, action) {
   switch (action.type) {
     case "DELETE_TODO":
