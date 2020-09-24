@@ -1,26 +1,45 @@
 import React from "react";
+import * as ACTIONS from "../actions/actions";
 
 const initState = {
-  todos: [
-    {
-      id: 1,
-      title: "View from the Top, A",
-      body:
-        "Quisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus. Phasellus in felis. Donec semper sapien a libero. Nam dui. Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius. Integer ac leo.",
-    },
-    {
-      id: 2,
-      title: "Wrestling Queens",
-      body:
-        "Mauris lacinia sapien quis libero. Nullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum. Integer a nibh. In quis justo. Maecenas rhoncus aliquam lacus.",
-    },
-  ],
+  loading: false,
+  todos: [],
+  error: "",
 };
 
-// coba dilenkapi semua CRUD action nya
-export default function rootReducer(state = initState, action) {
+export default function todoReducer(state = initState, action) {
   switch (action.type) {
-    case "DELETE_TODO":
+    case ACTIONS.FETCH_TODOS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ACTIONS.FETCH_TODOS_SUCCESS:
+      return {
+        loading: false,
+        todos: action.payload,
+        error: "",
+      };
+    case ACTIONS.FETCH_TODOS_FAILURE:
+      return {
+        loading: false,
+        todos: [],
+        error: action.payload,
+      };
+
+    case ACTIONS.ADD_TODO:
+      let todos = {
+        id: action.payload.id,
+        todo: action.payload.todo,
+        complete: 0,
+      };
+      let addTodos = [...state, todos];
+      return {
+        ...state,
+        todos: addTodos,
+      };
+
+    case ACTIONS.DELETE_TODO:
       let newTodos = state.todos.filter((todo) => {
         return action.payload != todo.id;
       });
