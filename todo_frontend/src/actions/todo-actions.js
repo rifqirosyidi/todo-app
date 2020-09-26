@@ -38,9 +38,29 @@ export const fetchTodos = () => {
 };
 
 export const addTodo = (todo) => {
-  return {
-    type: ACTIONS.ADD_TODO,
-    payload: { id: short_id.generate(), todo },
+  return function (dispatch) {
+    dispatch(fetchTodosRequest());
+
+    const apiUrl = "http://localhost:8000/api/todos";
+    fetch(apiUrl, {
+      method: "POST",
+      body: JSON.stringify({
+        todo: todo,
+      }),
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 200) {
+          const todos = data;
+          dispatch(fetchTodosSuccess(todos));
+        }
+      })
+      .catch((error) => {
+        dispatch(fetchTodosFailure(error));
+      });
   };
 };
 

@@ -6,10 +6,11 @@ import * as serviceWorker from "./serviceWorker";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
+import logger from "redux-logger";
 import todoReducer from "./reducer/todo-reducers";
 import { fetchTodos } from "./actions/todo-actions";
 
-const store = createStore(todoReducer, applyMiddleware(thunk));
+const store = createStore(todoReducer, applyMiddleware(logger, thunk));
 // Test Dispatch to get Initial Data From Api
 store.dispatch(fetchTodos());
 store.subscribe(() => {
