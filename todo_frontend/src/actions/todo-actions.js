@@ -1,5 +1,5 @@
 import short_id from "shortid";
-import * as ACTIONS from "./actions";
+import * as ACTIONS from "./todo-types";
 import axios from "axios";
 
 export const fetchTodosRequest = () => {

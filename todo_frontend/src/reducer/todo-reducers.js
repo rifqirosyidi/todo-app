@@ -1,5 +1,5 @@
 import React from "react";
-import * as ACTIONS from "../actions/actions";
+import * as ACTIONS from "../actions/todo-types";
 
 const initState = {
   loading: false,
